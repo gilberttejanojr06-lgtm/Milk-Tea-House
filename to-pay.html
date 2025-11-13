@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>To Pay - Dagupan Milk Tea House</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  body{margin:0;padding:20px;min-height:100vh;background:linear-gradient(135deg,#8b5cf6,#6366f1);color:white;font-family:"Poppins",sans-serif;}
+  h2{text-align:center;margin-top:50px;font-weight:700;font-size:1.8rem;}
+  .back-btn{background:rgba(255,255,255,0.2);color:white;border:none;padding:8px 14px;border-radius:8px;cursor:pointer;font-weight:600;position:fixed;top:20px;left:20px;transition:0.3s;}
+  .back-btn:hover{background:rgba(255,255,255,0.4);}
+  .nav-buttons{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:30px 0;}
+  .nav-buttons button{background:rgba(255,255,255,0.15);border:none;padding:12px 0;border-radius:10px;cursor:pointer;font-weight:600;color:white;transition:0.3s;font-size:14px;}
+  .nav-buttons button:hover{background:rgba(255,255,255,0.3);}
+  .nav-buttons .active{background:white;color:#6366f1;}
+  .order-info{background:rgba(255,255,255,0.1);border-radius:15px;padding:20px;margin-bottom:30px;color:white;}
+  .order-info h3{margin-top:0;font-weight:600;}
+  .order-item{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed rgba(255,255,255,0.3);font-size:14px;}
+  .order-item:last-child{border-bottom:none;}
+  .total{text-align:right;font-weight:700;margin-top:10px;font-size:16px;}
+</style>
+</head>
+<body>
+
+<button class="back-btn" onclick="window.location.href='profile.html'">← Back</button>
+<h2>💰 To Pay</h2>
+
+<div class="nav-buttons">
+  <button class="active" onclick="window.location.href='to-pay.html'">To Pay</button>
+  <button onclick="window.location.href='to-ship.html'">To Ship</button>
+  <button onclick="window.location.href='to-receive.html'">To Receive</button>
+  <button onclick="window.location.href='to-review.html'">To Review</button>
+</div>
+
+<div id="ordersList"></div>
+
+<script>
+const ordersList = document.getElementById("ordersList");
+const loggedInUser = localStorage.getItem("loggedInUser");
+
+if(!loggedInUser){
+  alert("Please log in first.");
+  window.location.href = "index.html";
+}
+
+// Load user's orders filtered by status
+function loadOrders(status="To Pay"){
+  const orders = JSON.parse(localStorage.getItem(`${loggedInUser}_orders`)) || [];
+  return orders.filter(o => o.status === status);
+}
+
+// Render orders
+function renderOrders(){
+  ordersList.innerHTML = "";
+  const toPayOrders = loadOrders("To Pay");
+  if(toPayOrders.length === 0){
+    ordersList.innerHTML = "<p style='text-align:center;'>No pending payments found.</p>";
+    return;
+  }
+
+  toPayOrders.forEach((order,index)=>{
+    const div = document.createElement("div");
+    div.classList.add("order-info");
+
+    const itemsHTML = order.items.map(item => `
+      <div class="order-item">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <img src="${item.image || 'https://via.placeholder.com/50'}" alt="${item.name}" style="width:50px;height:50px;object-fit:cover;border-radius:5px;">
+          <span>${item.name} × ${item.quantity}</span>
+        </div>
+        <span>₱${(item.price * item.quantity).toFixed(2)}</span>
+      </div>
+    `).join("");
+
+    const totalPrice = order.items.reduce((sum,i)=>sum+(i.price*i.quantity),0).toFixed(2);
+
+    div.innerHTML = `
+      <h3>Order #${index+1}</h3>
+      ${itemsHTML}
+      <div class="total">Total: ₱${totalPrice}</div>
+    `;
+
+    ordersList.appendChild(div);
+  });
+}
+
+window.addEventListener('storage', e=>{
+  if(e.key === `${loggedInUser}_orders`) renderOrders();
+});
+
+renderOrders();
+</script>
+</body>
+</html>

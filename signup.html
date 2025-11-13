@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dagupan Milk Tea House - Sign Up</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    }
+
+    .signup-container {
+      background: #fff;
+      width: 90%;
+      max-width: 440px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+      animation: fadeIn 0.8s ease;
+    }
+
+    .signup-header {
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: #fff;
+      text-align: center;
+      padding: 25px 10px;
+    }
+
+    .signup-header h2 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .signup-body {
+      padding: 30px 25px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 6px;
+      color: #333;
+      font-size: 14px;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 14px;
+      background: #f9fafb;
+      transition: all 0.3s ease;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #6366f1;
+      background: #fff;
+      box-shadow: 0 0 6px rgba(99, 102, 241, 0.4);
+    }
+
+    .phone-group {
+      display: flex;
+      gap: 10px;
+    }
+
+    .phone-group select {
+      width: 35%;
+      text-align: center;
+      background: #f3f4f6;
+    }
+
+    .phone-group input {
+      width: 65%;
+    }
+
+    .signup-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      border: none;
+      padding: 14px;
+      color: white;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .signup-btn:hover {
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(99, 102, 241, 0.4);
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 18px;
+      font-size: 14px;
+    }
+
+    .login-link a {
+      color: #6366f1;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .login-link a:hover {
+      text-decoration: underline;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="signup-container">
+    <div class="signup-header">
+      <h2>Create Your Account</h2>
+      <p style="font-size:13px; opacity:0.9;">Join Dagupan Milk Tea House today!</p>
+    </div>
+
+    <div class="signup-body">
+      <form id="signupForm">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="fullname" placeholder="Enter your full name" required>
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <div class="phone-group">
+            <select id="countryCode" required>
+              <option value="+63" selected>🇵🇭 +63</option>
+              <option value="+1">🇺🇸 +1</option>
+              <option value="+44">🇬🇧 +44</option>
+              <option value="+61">🇦🇺 +61</option>
+              <option value="+81">🇯🇵 +81</option>
+              <option value="+82">🇰🇷 +82</option>
+              <option value="+65">🇸🇬 +65</option>
+              <option value="+86">🇨🇳 +86</option>
+            </select>
+            <input type="tel" id="phone" placeholder="xxxxxxxxxx" pattern="[0-9]{8,11}" maxlength="11" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="province">Province</label>
+          <select id="province" required>
+            <option value="">-- Select Province --</option>
+            <option value="Cagayan">Cagayan</option>
+            <option value="Apayao">Apayao</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="municipality">Municipality/City</label>
+          <select id="municipality" required>
+            <option value="">-- Select Municipality/City --</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="barangay">Barangay</label>
+          <select id="barangay" required>
+            <option value="">-- Select Barangay --</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" placeholder="Enter your email" required>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="Create a password" required>
+        </div>
+
+        <div class="form-group">
+          <label for="confirm">Confirm Password</label>
+          <input type="password" id="confirm" placeholder="Confirm your password" required>
+        </div>
+
+        <button type="submit" class="signup-btn">Sign Up</button>
+
+        <div class="login-link">
+          Already have an account? <a href="index.html">Login</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const data = {
+      "Cagayan": {
+        "Abulug": ["Alinunu",],
+        "Alcala": ["Centro Norte", "Centro Sur", "Baybayog", "Bagumbayan", "Camalaniugan"],
+        "Allacapan": ["Centro East", "Centro West", "Balatubat", "Capalutan", "Tangatan"],
+        "Amulung": ["Centro East", "Centro West", "Fugu", "Bacring", "Paruddun"],
+        "Aparri": ["Backiling", "Bangag", "Binalan", "Bisagu", "Bukig", "Bulala Norte", "Bulala Sur", "Caagaman", "Centro 1", "Centro 2",
+          "Centro 3", "Centro 4", "Centro 5", "Centro 6", "Centro 7", "Centro 8", "Centro 9", "Centro 10", "Centro 11", "Centro 12", "Centro 13",
+          "Centro 14", "Centro 15", "Dodan", "Fuga Island", "Gaddang", "Linao", " Mabanguc", "Macanaya", "Maura", "Minanga", "Navagan", "Paddaya",
+          "Paruddun Norte", " Paruddun Sur", " Plaza", "Punta", "San Antonio", "Sanja", "Tallungan", "Toran", "Zinarag"]
+        ,
+        "Baggao": ["Centro", "Asinga-Via", "Ammugauan", "San Miguel", "San Jose"],
+        "Ballesteros": ["Centro East", "Centro West", "Cabuluan East", "Cabuluan West", "San Juan"],
+        "Buguey": ["Centro", "Ballesteros", "Luna", "Minanga", "San Lorenzo"],
+        "Calayan": ["Centro 1", "Centro 2", "Dadao", "Dalupiri", "Malangsi"],
+        "Camalaniugan": ["Centro East", "Centro West", "Afusing Bato", "Baculud", "Bulala Norte"],
+        "Claveria": ["Centro 1", "Centro 2", "Centro 3", "Union", "San Vicente"],
+        "Enrile": ["Centro East", "Centro West", "Divisoria", "Bical", "Malanday"],
+        "Gattaran": ["Centro East", "Centro West", "San Isidro", "Naruangan", "Villa"],
+        "Gonzaga": ["Centro", "Bunugan", "Cabanbanan", "Casitan", "San Jose"],
+        "Iguig": ["Centro 1", "Centro 2", "Centro 3", "Minanga", "Santa Teresa"],
+        "Lal-lo": ["Centro 1", "Centro 2", "Centro 3", "Centro 4", "Catugan"],
+        "Lasam": ["Abagao", "Callao", "Tamban", "Capanikian", "Gagabutan East"],
+        "Pamplona": ["Centro East", "Centro West", "Bidduang", "Abbangkeruan", "Gattu"],
+        "Penablanca": ["Cabuluan", "Mabini", "Callao", "Aggugaddan", "Minanga"],
+        "Piat": ["Centro", "Afusing Bato", "Balanni", "Pared", "San Antonio"],
+        "Rizal": ["Centro", "Callao", "Mabini", "Pared", "San Felipe"],
+        "Sanchez-Mira": ["Centro East", "Centro West", "Luppidan", "Callungan", "Dungeg"],
+        "Santa Ana": ["Centro 1", "Centro 2", "Centro 3", "San Vicente", "Casambalangan"],
+        "Santa Praxedes": ["Centro", "Cadong", "Portabaga", "San Juan", "San Gabriel"],
+        "Santa Teresita": ["Centro East", "Centro West", "Antagan", "San Vicente", "Aridowen"],
+        "Santo Niño": ["Centro", "Baybayog", "San Vicente", "San Rafael", "Santa Maria"],
+        "Solana": ["Centro East", "Centro West", "Aggugaddan", "Andarayan", "Naruangan"],
+        "Tuao": ["Centro East", "Centro West", "Balzain", "Angang", "Luna"]
+      },
+      "Apayao": {
+        "Calanasan": ["Centro", "Poblacion", "Lenneng", "Bayugao", "Eleazar"],
+        "Conner": ["Malama", "Nabuangan", "Kagayanan", "Cupis", "Lemong"],
+        "Flora": ["Luna West", "Santa Maria", "Malubibit Norte", "Balluyan", "Anninipan"],
+        "Kabugao": ["Lenneng", "Marag", "Bulu", "Luttuacan", "Poblacion"],
+        "Luna": ["San Isidro", "San Francisco", "Turod", "Bacsay", "Santa Lina", "Dagupan"],
+        "Pudtol": ["Cabaritan", "Imelda", "Malibang", "Mataguisi", "San Antonio"],
+        "Santa Marcela": ["Baro", "Marcela", "Consuelo", "Malekkeg", "Sipa"]
+      }
+    };
+
+    const provinceSelect = document.getElementById("province");
+    const municipalitySelect = document.getElementById("municipality");
+    const barangaySelect = document.getElementById("barangay");
+
+    provinceSelect.addEventListener("change", () => {
+      const selectedProvince = provinceSelect.value;
+      municipalitySelect.innerHTML = `<option value="">-- Select Municipality/City --</option>`;
+      barangaySelect.innerHTML = `<option value="">-- Select Barangay --</option>`;
+
+      if (data[selectedProvince]) {
+        Object.keys(data[selectedProvince]).forEach(municipality => {
+          const opt = document.createElement("option");
+          opt.value = municipality;
+          opt.textContent = municipality;
+          municipalitySelect.appendChild(opt);
+        });
+      }
+    });
+
+    municipalitySelect.addEventListener("change", () => {
+      const selectedProvince = provinceSelect.value;
+      const selectedMunicipality = municipalitySelect.value;
+      barangaySelect.innerHTML = `<option value="">-- Select Barangay --</option>`;
+
+      if (data[selectedProvince] && data[selectedProvince][selectedMunicipality]) {
+        data[selectedProvince][selectedMunicipality].forEach(barangay => {
+          const opt = document.createElement("option");
+          opt.value = barangay;
+          opt.textContent = barangay;
+          barangaySelect.appendChild(opt);
+        });
+      }
+    });
+
+    document.getElementById("signupForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const fullName = document.getElementById("fullname").value.trim();
+      const countryCode = document.getElementById("countryCode").value;
+      const phone = document.getElementById("phone").value.trim();
+      const province = document.getElementById("province").value;
+      const municipality = document.getElementById("municipality").value;
+      const barangay = document.getElementById("barangay").value;
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const confirm = document.getElementById("confirm").value.trim();
+
+      if (password !== confirm) {
+        alert("❌ Passwords do not match!");
+        return;
+      }
+
+      if (!province || !municipality || !barangay) {
+        alert("⚠️ Please complete your address information.");
+        return;
+      }
+
+      const newUser = {
+        name: fullName,
+        phone: countryCode + " " + phone,
+        address: `${barangay}, ${municipality}, ${province}`,
+        email,
+        password
+      };
+
+      const users = JSON.parse(localStorage.getItem("users")) || [];
+      users.push(newUser);
+      localStorage.setItem("users", JSON.stringify(users));
+
+      alert("✅ Account created successfully!");
+      window.location.href = "home.html";
+    });
+  </script>
+
+</body>
+
+</html>

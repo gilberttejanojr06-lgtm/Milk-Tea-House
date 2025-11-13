@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manage Products - Dagupan Milk Tea House</title>
+
+  <style>
+    :root {
+      --primary: #6366f1;
+      --secondary: #8b5cf6;
+      --bg: #f3f4f6;
+      --text-dark: #1f2937;
+      --sidebar-width: 230px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      display: flex;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text-dark);
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: var(--sidebar-width);
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      padding: 25px 20px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      box-shadow: 4px 0 15px rgba(0, 0, 0, 0.15);
+    }
+
+    .sidebar h2 {
+      font-size: 20px;
+      text-align: center;
+      margin-bottom: 30px;
+      font-weight: 700;
+    }
+
+    .nav-links a {
+      display: block;
+      color: white;
+      text-decoration: none;
+      padding: 10px 15px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      transition: 0.3s;
+      font-weight: 500;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .logout-btn {
+      background: #ef4444;
+      border: none;
+      color: white;
+      padding: 6px 8px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 13px;
+      transition: 0.3s;
+      width: 80%;
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .logout-btn:hover {
+      background: #dc2626;
+      transform: translateX(-50%) scale(1.05);
+    }
+
+    /* Main */
+    .main-content {
+      flex: 1;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .main-content h1 {
+      color: var(--primary);
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    /* Add Product Form */
+    .add-product-form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 25px;
+    }
+
+    .add-product-form input,
+    .add-product-form textarea {
+      padding: 10px 12px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 14px;
+      width: calc(33% - 10px);
+      min-width: 200px;
+    }
+
+    textarea {
+      resize: none;
+      height: 80px;
+    }
+
+    .add-product-form button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 20px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .add-product-form button:hover {
+      background: var(--secondary);
+      transform: translateY(-2px);
+    }
+
+    /* Table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+    }
+
+    th,
+    td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+      font-size: 14px;
+      vertical-align: top;
+    }
+
+    th {
+      background: var(--primary);
+      color: white;
+    }
+
+    tr:hover td {
+      background: #f5f5ff;
+    }
+
+    img {
+      border-radius: 8px;
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+    }
+
+    .desc {
+      max-height: 38px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      position: relative;
+    }
+
+    .read-more {
+      color: var(--primary);
+      font-size: 13px;
+      cursor: pointer;
+      display: inline-block;
+      margin-top: 4px;
+    }
+
+    .delete-btn,
+    .edit-btn {
+      border: none;
+      color: white;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      transition: 0.3s;
+      margin-right: 5px;
+    }
+
+    .delete-btn {
+      background: #ef4444;
+    }
+
+    .delete-btn:hover {
+      background: #dc2626;
+    }
+
+    .edit-btn {
+      background: #10b981;
+    }
+
+    .edit-btn:hover {
+      background: #059669;
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 20px 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      width: 90%;
+      max-width: 400px;
+    }
+
+    .modal-content h2 {
+      margin-bottom: 15px;
+      text-align: center;
+      color: var(--primary);
+    }
+
+    .modal-content input,
+    .modal-content textarea {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 8px 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .modal-content textarea {
+      resize: none;
+      height: 80px;
+    }
+
+    .modal-content button {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      background: var(--primary);
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .modal-content button:hover {
+      background: var(--secondary);
+    }
+
+    @media (max-width: 768px) {
+
+      .add-product-form input,
+      .add-product-form textarea {
+        width: 100%;
+      }
+
+      table {
+        font-size: 12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <aside class="sidebar">
+    <h2>Admin Panel</h2>
+    <div class="nav-links">
+      <a href="admin.html">🏠 Dashboard</a>
+      <a href="manage-order.html">🧋 Orders</a>
+      <a href="users.html">👤 Users</a>
+      <a href="product.html" class="active">🍵 Products</a>
+      <a href="manage-review.html">📝 Review</a>
+      <a href="#">⚙️ Settings</a>
+    </div>
+    <button class="logout-btn" onclick="window.location.href='admin-login.html'">Logout</button>
+  </aside>
+
+  <main class="main-content">
+    <h1>Manage Products</h1>
+
+    <form class="add-product-form" onsubmit="addProduct(event)">
+      <input type="text" id="productName" placeholder="Product Name" required>
+      <input type="number" id="productPrice" placeholder="Price (₱)" required>
+      <textarea id="productDesc" placeholder="Description"></textarea>
+      <input type="file" id="productImage" accept="image/*">
+      <button type="submit">Add Product</button>
+    </form>
+
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Product Name</th>
+          <th>Price</th>
+          <th>Description</th>
+          <th>Image</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="productList"></tbody>
+    </table>
+  </main>
+
+  <!-- Edit Modal -->
+  <div class="modal" id="editModal">
+    <div class="modal-content">
+      <h2>Edit Product</h2>
+      <input type="text" id="editName" placeholder="Product Name" />
+      <input type="number" id="editPrice" placeholder="Price (₱)" />
+      <textarea id="editDesc" placeholder="Description"></textarea>
+      <input type="file" id="editImage" accept="image/*" />
+      <button onclick="saveEdit()">Save Changes</button>
+    </div>
+  </div>
+
+  <script>
+    let products = JSON.parse(localStorage.getItem("products")) || [];
+    const productList = document.getElementById("productList");
+    let editIndex = null;
+
+    function displayProducts() {
+      productList.innerHTML = "";
+      products.forEach((product, index) => {
+        const row = document.createElement("tr");
+        const shortDesc = product.desc?.length > 50
+          ? product.desc.substring(0, 50) + "..."
+          : product.desc || "—";
+        row.innerHTML = `
+          <td>${index + 1}</td>
+          <td>${product.name}</td>
+          <td>₱${parseFloat(product.price).toFixed(2)}</td>
+          <td>
+            <div class="desc" id="desc-${index}">${shortDesc}</div>
+            ${product.desc?.length > 50 ? `<span class="read-more" onclick="toggleDesc(${index})">Read More</span>` : ""}
+          </td>
+          <td><img src="${product.image || 'https://cdn-icons-png.flaticon.com/512/685/685352.png'}"></td>
+          <td>
+            <button class="edit-btn" onclick="openEdit(${index})">Edit</button>
+            <button class="delete-btn" onclick="deleteProduct(${index})">Delete</button>
+          </td>
+        `;
+        productList.appendChild(row);
+      });
+    }
+
+    function toggleDesc(index) {
+      const descEl = document.getElementById(`desc-${index}`);
+      const btn = descEl.nextElementSibling;
+      if (btn.innerText === "Read More") {
+        descEl.innerText = products[index].desc;
+        btn.innerText = "Show Less";
+      } else {
+        descEl.innerText = products[index].desc.substring(0, 50) + "...";
+        btn.innerText = "Read More";
+      }
+    }
+
+    function addProduct(e) {
+      e.preventDefault();
+      const name = document.getElementById("productName").value.trim();
+      const price = document.getElementById("productPrice").value.trim();
+      const desc = document.getElementById("productDesc").value.trim();
+      const fileInput = document.getElementById("productImage");
+
+      if (!name || !price) return alert("⚠️ Please fill in product name and price.");
+
+      if (fileInput.files.length > 0) {
+        const reader = new FileReader();
+        reader.onload = function (event) {
+          saveProduct(name, price, desc, event.target.result);
+        };
+        reader.readAsDataURL(fileInput.files[0]);
+      } else {
+        saveProduct(name, price, desc, "");
+      }
+    }
+
+    function saveProduct(name, price, desc, image) {
+      products.push({ name, price, desc, image });
+      localStorage.setItem("products", JSON.stringify(products));
+      document.querySelector(".add-product-form").reset();
+      displayProducts();
+    }
+
+    function deleteProduct(index) {
+      if (confirm("🗑️ Delete this product?")) {
+        products.splice(index, 1);
+        localStorage.setItem("products", JSON.stringify(products));
+        displayProducts();
+      }
+    }
+
+    function openEdit(index) {
+      editIndex = index;
+      const product = products[index];
+      document.getElementById("editName").value = product.name;
+      document.getElementById("editPrice").value = product.price;
+      document.getElementById("editDesc").value = product.desc || "";
+      document.getElementById("editModal").style.display = "flex";
+    }
+
+    function saveEdit() {
+      const name = document.getElementById("editName").value.trim();
+      const price = document.getElementById("editPrice").value.trim();
+      const desc = document.getElementById("editDesc").value.trim();
+      const fileInput = document.getElementById("editImage");
+
+      if (!name || !price) return alert("⚠️ Fill out all fields.");
+
+      if (fileInput.files.length > 0) {
+        const reader = new FileReader();
+        reader.onload = function (event) {
+          products[editIndex] = { name, price, desc, image: event.target.result };
+          localStorage.setItem("products", JSON.stringify(products));
+          closeModal();
+        };
+        reader.readAsDataURL(fileInput.files[0]);
+      } else {
+        products[editIndex] = { ...products[editIndex], name, price, desc };
+        localStorage.setItem("products", JSON.stringify(products));
+        closeModal();
+      }
+    }
+
+    function closeModal() {
+      document.getElementById("editModal").style.display = "none";
+      displayProducts();
+    }
+
+    window.onclick = (e) => {
+      if (e.target.id === "editModal") closeModal();
+    };
+
+    displayProducts();
+  </script>
+</body>
+
+</html>

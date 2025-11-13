@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Dagupan Milk Tea House</title>
+    <style>
+        body {
+            font-family: "Poppins", sans-serif;
+            background: linear-gradient(135deg, #2563eb, #1e40af);
+            color: white;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        .checkout-container {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 25px;
+            border-radius: 15px;
+            max-width: 700px;
+            margin: 30px auto;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            margin-top: 10px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 8px;
+            font-family: "Poppins", sans-serif;
+        }
+
+        .order-summary {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.3);
+        }
+
+        .order-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .item-info img {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .total {
+            text-align: right;
+            font-weight: 700;
+            margin-top: 10px;
+        }
+
+        .place-order-btn {
+            width: 100%;
+            padding: 14px;
+            background: #22c55e;
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        .place-order-btn:hover {
+            background: #16a34a;
+            transform: scale(1.05);
+        }
+
+        #addNewAddressBtn {
+            background: #2563eb;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        #addNewAddressBtn:hover {
+            background: #1d4ed8;
+        }
+
+        #deleteAddressBtn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-left: 10px;
+            cursor: pointer;
+            display: none;
+        }
+
+        #deleteAddressBtn:hover {
+            background: #dc2626;
+        }
+
+        .payment-details {
+            display: none;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <button class="back-btn" onclick="window.location.href='cart.html'">← Back</button>
+    <h2>🧾 Checkout</h2>
+
+    <div class="checkout-container">
+
+        <!-- Address Section -->
+        <div>
+            <p class="section-title">Your Address</p>
+            <select id="savedAddresses"></select>
+            <button id="addNewAddressBtn">+ Add New Address</button>
+            <button id="deleteAddressBtn">🗑 Delete Address</button>
+
+            <div id="newAddressSection">
+                <label>Full Name</label>
+                <input type="text" id="name" required>
+                <label>Phone Number</label>
+                <input type="text" id="phone" required>
+                <label>Province</label>
+                <select id="province" required></select>
+                <label>Municipality</label>
+                <select id="municipality" required></select>
+                <label>Barangay</label>
+                <select id="barangay" required></select>
+                <label>ZIP Code</label>
+                <input type="text" id="zipCode" readonly required>
+            </div>
+        </div>
+
+        <!-- Order Summary -->
+        <div>
+            <p class="section-title">Order Summary</p>
+            <div class="order-summary" id="orderSummary"></div>
+            <div class="total" id="orderTotal">Total: ₱0.00</div>
+        </div>
+
+        <!-- Payment Method -->
+        <div>
+            <p class="section-title">Payment Method</p>
+            <select id="paymentMethod" required>
+                <option value="">Select Payment Method</option>
+                <option value="Cash on Delivery">Cash on Delivery</option>
+                <option value="GCash">GCash</option>
+                <option value="PayMaya">PayMaya</option>
+            </select>
+            <div id="gcashDetails" class="payment-details">
+                <input type="text" id="gcashNumber" placeholder="GCash Number">
+                <input type="file" id="gcashProof" accept="image/*">
+            </div>
+            <div id="paymayaDetails" class="payment-details">
+                <input type="text" id="paymayaName" placeholder="PayMaya Name">
+                <input type="file" id="paymayaProof" accept="image/*">
+            </div>
+        </div>
+
+        <button class="place-order-btn" id="placeOrderBtn">Place Order</button>
+    </div>
+
+    <script>
+        // Ensure user is logged in
+        const loggedInUser = localStorage.getItem("loggedInUser");
+        if (!loggedInUser) { alert("Please log in first."); window.location.href = "index.html"; }
+
+        // ------------------ Cart Items ------------------
+        const checkoutItems = JSON.parse(localStorage.getItem(`${loggedInUser}_checkoutItems`)) || [];
+        const orderSummary = document.getElementById("orderSummary");
+        const orderTotal = document.getElementById("orderTotal");
+
+        function updateSummary() {
+            orderSummary.innerHTML = "";
+            let total = 0;
+            if (checkoutItems.length === 0) {
+                orderSummary.innerHTML = "<p>No items to checkout.</p>";
+                orderTotal.textContent = "Total: ₱0.00";
+                return;
+            }
+            checkoutItems.forEach(item => {
+                total += item.price * item.quantity;
+                const div = document.createElement("div");
+                div.classList.add("order-item");
+                div.innerHTML = `<div class="item-info"><img src="${item.image}" alt="${item.name}"><span>${item.name} x ${item.quantity}</span></div><span>₱${(item.price * item.quantity).toFixed(2)}</span>`;
+                orderSummary.appendChild(div);
+            });
+            orderTotal.textContent = "Total: ₱" + total.toFixed(2);
+        }
+        updateSummary();
+
+        // ------------------ Payment Toggle ------------------
+        const paymentSelect = document.getElementById("paymentMethod");
+        const gcashDetails = document.getElementById("gcashDetails");
+        const paymayaDetails = document.getElementById("paymayaDetails");
+
+        paymentSelect.addEventListener("change", () => {
+            gcashDetails.style.display = paymentSelect.value === "GCash" ? "block" : "none";
+            paymayaDetails.style.display = paymentSelect.value === "PayMaya" ? "block" : "none";
+        });
+
+        // ------------------ Address Section ------------------
+        const savedAddressesSelect = document.getElementById("savedAddresses");
+        const newAddressSection = document.getElementById("newAddressSection");
+        const addNewAddressBtn = document.getElementById("addNewAddressBtn");
+        const deleteAddressBtn = document.getElementById("deleteAddressBtn");
+
+        let profileAddresses = JSON.parse(localStorage.getItem(`${loggedInUser}_profileAddresses`)) || [];
+        let lastUsedAddress = JSON.parse(localStorage.getItem(`${loggedInUser}_lastUsedAddress`)) || null;
+
+        const locations = { "Cagayan": ["Tuguegarao", "Aparri", "Santa Ana"], "Isabela": ["Ilagan", "Cauayan", "Santiago"] };
+        const barangays = { "Tuguegarao": ["Bagay", "Centro", "San Juan"], "Aparri": ["Barangay 1", "Barangay 2"], "Santa Ana": ["Barangay A", "Barangay B"], "Ilagan": ["Zone 1", "Zone 2"], "Cauayan": ["Zone A", "Zone B"], "Santiago": ["Barangay X", "Barangay Y"] };
+        const zipCodes = { "Bagay": "3500", "Centro": "3501", "San Juan": "3502", "Barangay 1": "3503", "Barangay 2": "3504", "Barangay A": "3505", "Barangay B": "3506", "Zone 1": "3507", "Zone 2": "3508", "Zone A": "3509", "Zone B": "3510", "Barangay X": "3511", "Barangay Y": "3512" };
+
+        const provinceSelect = document.getElementById("province");
+        const municipalitySelect = document.getElementById("municipality");
+        const barangaySelect = document.getElementById("barangay");
+
+        function loadProvinces() {
+            provinceSelect.innerHTML = '<option value="">Select Province</option>';
+            Object.keys(locations).forEach(p => {
+                const opt = document.createElement("option"); opt.value = p; opt.textContent = p; provinceSelect.appendChild(opt);
+            });
+        }
+        loadProvinces();
+
+        provinceSelect.addEventListener("change", () => {
+            const prov = provinceSelect.value;
+            municipalitySelect.innerHTML = '<option value="">Select Municipality</option>';
+            barangaySelect.innerHTML = '<option value="">Select Barangay</option>';
+            if (prov) locations[prov].forEach(m => {
+                const opt = document.createElement("option"); opt.value = m; opt.textContent = m; municipalitySelect.appendChild(opt);
+            });
+        });
+
+        municipalitySelect.addEventListener("change", () => {
+            const mun = municipalitySelect.value;
+            barangaySelect.innerHTML = '<option value="">Select Barangay</option>';
+            if (mun && barangays[mun]) barangays[mun].forEach(b => {
+                const opt = document.createElement("option"); opt.value = b; opt.textContent = b; barangaySelect.appendChild(opt);
+            });
+        });
+
+        barangaySelect.addEventListener("change", () => { document.getElementById("zipCode").value = zipCodes[barangaySelect.value] || ""; });
+
+        function loadSavedAddresses() {
+            savedAddressesSelect.innerHTML = '<option value="">Select an Address</option>';
+            profileAddresses.forEach((addr, i) => {
+                const opt = document.createElement("option"); opt.value = i; opt.textContent = `${addr.name} - ${addr.province}, ${addr.municipality}, ${addr.barangay}`; savedAddressesSelect.appendChild(opt);
+            });
+            deleteAddressBtn.style.display = savedAddressesSelect.value !== "" ? "inline-block" : "none";
+            if (lastUsedAddress) {
+                const idx = profileAddresses.findIndex(a => a.name === lastUsedAddress.name && a.phone === lastUsedAddress.phone);
+                if (idx !== -1) { savedAddressesSelect.value = idx; fillAddressForm(profileAddresses[idx]); newAddressSection.style.display = "none"; deleteAddressBtn.style.display = "inline-block"; }
+            }
+        }
+        function fillAddressForm(addr) {
+            document.getElementById("name").value = addr.name;
+            document.getElementById("phone").value = addr.phone;
+            provinceSelect.value = addr.province; provinceSelect.dispatchEvent(new Event("change"));
+            municipalitySelect.value = addr.municipality; municipalitySelect.dispatchEvent(new Event("change"));
+            barangaySelect.value = addr.barangay; barangaySelect.dispatchEvent(new Event("change"));
+            document.getElementById("zipCode").value = addr.zipCode;
+        }
+        addNewAddressBtn.addEventListener("click", () => { newAddressSection.style.display = "block"; savedAddressesSelect.value = ""; deleteAddressBtn.style.display = "none"; });
+        savedAddressesSelect.addEventListener("change", () => {
+            const idx = savedAddressesSelect.value;
+            if (idx !== "") { fillAddressForm(profileAddresses[idx]); newAddressSection.style.display = "none"; deleteAddressBtn.style.display = "inline-block"; }
+            else { newAddressSection.style.display = "block"; deleteAddressBtn.style.display = "none"; }
+        });
+        deleteAddressBtn.addEventListener("click", () => {
+            const idx = savedAddressesSelect.value;
+            if (idx === "") return;
+            if (confirm("⚠️ Are you sure you want to delete this address?")) {
+                profileAddresses.splice(idx, 1);
+                localStorage.setItem(`${loggedInUser}_profileAddresses`, JSON.stringify(profileAddresses));
+                savedAddressesSelect.value = ""; deleteAddressBtn.style.display = "none"; newAddressSection.style.display = "block";
+                document.getElementById("name").value = ""; document.getElementById("phone").value = ""; provinceSelect.value = ""; municipalitySelect.innerHTML = '<option value="">Select Municipality</option>'; barangaySelect.innerHTML = '<option value="">Select Barangay</option>'; document.getElementById("zipCode").value = "";
+                loadSavedAddresses();
+            }
+        });
+        loadSavedAddresses();
+
+        // ------------------ Place Order ------------------
+        document.getElementById("placeOrderBtn").addEventListener("click", () => {
+            const name = document.getElementById("name").value.trim();
+            const phone = document.getElementById("phone").value.trim();
+            const province = provinceSelect.value;
+            const municipality = municipalitySelect.value;
+            const barangay = barangaySelect.value;
+            const zipCode = document.getElementById("zipCode").value;
+            const paymentMethod = paymentSelect.value;
+
+            if (!name || !phone || !province || !municipality || !barangay || !zipCode) { alert("⚠️ Please fill out all address information."); return; }
+            if (!paymentMethod) { alert("⚠️ Please select a payment method."); return; }
+
+            // Optional: Validate GCash/PayMaya details
+            if (paymentMethod === "GCash" && !document.getElementById("gcashNumber").value) { alert("⚠️ Enter GCash Number."); return; }
+            if (paymentMethod === "PayMaya" && !document.getElementById("paymayaName").value) { alert("⚠️ Enter PayMaya Name."); return; }
+
+            if (checkoutItems.length === 0) { alert("⚠️ Your cart is empty."); return; }
+
+            const total = checkoutItems.reduce((sum, i) => sum + i.price * i.quantity, 0);
+            const orders = JSON.parse(localStorage.getItem(`${loggedInUser}_orders`)) || [];
+            const newOrder = { name, phone, province, municipality, barangay, zipCode, items: checkoutItems, total: total.toFixed(2), paymentMethod, status: "To Pay", date: new Date().toLocaleString() };
+            orders.push(newOrder);
+            localStorage.setItem(`${loggedInUser}_orders`, JSON.stringify(orders));
+
+            const addrIndex = profileAddresses.findIndex(a => a.name === name && a.phone === phone && a.province === province && a.municipality === municipality && a.barangay === barangay);
+            if (addrIndex === -1) { profileAddresses.push({ name, phone, province, municipality, barangay, zipCode }); localStorage.setItem(`${loggedInUser}_profileAddresses`, JSON.stringify(profileAddresses)); }
+            localStorage.setItem(`${loggedInUser}_lastUsedAddress`, JSON.stringify({ name, phone, province, municipality, barangay, zipCode }));
+
+            let cart = JSON.parse(localStorage.getItem(`${loggedInUser}_cart`)) || [];
+            cart = cart.filter(c => !checkoutItems.some(ci => ci.name === c.name));
+            localStorage.setItem(`${loggedInUser}_cart`, JSON.stringify(cart));
+            localStorage.removeItem(`${loggedInUser}_checkoutItems`);
+
+            alert(`✅ Order placed successfully using ${paymentMethod}!`);
+            window.location.href = "to-pay.html";
+        });
+    </script>
+</body>
+
+</html>

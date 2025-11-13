@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>To Review - Dagupan Milk Tea House</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  body {
+    margin:0; padding:20px;
+    min-height:100vh;
+    background:linear-gradient(135deg,#8b5cf6,#6366f1);
+    color:white;
+    font-family:"Poppins",sans-serif;
+  }
+  h2 {
+    text-align:center;
+    margin-top:50px;
+    font-weight:700;
+    font-size:1.8rem;
+  }
+  .back-btn {
+    background:rgba(255,255,255,0.2);
+    color:white;
+    border:none;
+    padding:8px 14px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:600;
+    position:fixed;
+    top:20px;
+    left:20px;
+    transition:0.3s;
+  }
+  .back-btn:hover { background:rgba(255,255,255,0.4); }
+  .nav-buttons {
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+    margin:30px 0;
+  }
+  .nav-buttons button {
+    background:rgba(255,255,255,0.15);
+    border:none;
+    padding:12px 0;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:600;
+    color:white;
+    transition:0.3s;
+    font-size:14px;
+  }
+  .nav-buttons button:hover { background:rgba(255,255,255,0.3); }
+  .nav-buttons .active { background:white; color:#6366f1; }
+  .order-info {
+    background:rgba(255,255,255,0.1);
+    border-radius:15px;
+    padding:20px;
+    margin-bottom:30px;
+    color:white;
+  }
+  .order-info h3 { margin-top:0; font-weight:600; }
+  .order-item {
+    display:flex; justify-content:space-between;
+    padding:8px 0;
+    border-bottom:1px dashed rgba(255,255,255,0.3);
+    font-size:14px;
+  }
+  .order-item:last-child { border-bottom:none; }
+  .total { text-align:right; font-weight:700; margin-top:10px; font-size:16px; }
+  .review-box { margin-top:15px; }
+  .review-input, .review-box input[type="file"] {
+    width:100%;
+    padding:8px;
+    border-radius:8px;
+    border:none;
+    font-family:"Poppins",sans-serif;
+    font-size:14px;
+    margin-bottom:10px;
+  }
+  .submit-btn {
+    background:#10b981;
+    border:none;
+    padding:6px 12px;
+    border-radius:6px;
+    color:white;
+    font-weight:600;
+    cursor:pointer;
+    transition:0.3s;
+  }
+  .submit-btn:hover { background:#059669; }
+  .star-rating {
+    display:flex;
+    font-size:20px;
+    cursor:pointer;
+    margin-bottom:8px;
+  }
+  .star-rating span {
+    color:#ffd700;
+    margin-right:5px;
+    transition: transform 0.2s;
+  }
+  .star-rating span:hover,
+  .star-rating span.hovered,
+  .star-rating span.selected { transform: scale(1.2); }
+  .review-image-preview img { width:60px; height:60px; object-fit:cover; border-radius:5px; margin-bottom:10px; }
+</style>
+</head>
+<body>
+
+<button class="back-btn" onclick="window.location.href='profile.html'">← Back</button>
+<h2>⭐ To Review</h2>
+
+<div class="nav-buttons">
+  <button onclick="window.location.href='to-pay.html'">To Pay</button>
+  <button onclick="window.location.href='to-ship.html'">To Ship</button>
+  <button onclick="window.location.href='to-receive.html'">To Receive</button>
+  <button class="active" onclick="window.location.href='to-review.html'">To Review</button>
+</div>
+
+<div id="ordersList"></div>
+
+<script>
+const ordersList = document.getElementById("ordersList");
+const loggedInUser = localStorage.getItem("loggedInUser");
+
+if(!loggedInUser){
+  alert("Please log in first.");
+  window.location.href = "index.html";
+}
+
+function loadOrders(status="To Review"){
+  const orders = JSON.parse(localStorage.getItem(`${loggedInUser}_orders`)) || [];
+  return orders.filter(o => o.status === status);
+}
+
+function saveOrders(updatedOrders){
+  localStorage.setItem(`${loggedInUser}_orders`, JSON.stringify(updatedOrders));
+  window.dispatchEvent(new Event('storage'));
+}
+
+function indexToId(index){ return `order-${index}`; }
+
+let starFunctions = [];
+
+function setupStarRating(index){
+  const starContainer = document.getElementById(`stars-${indexToId(index)}`);
+  let selectedRating = 5;
+  const stars = starContainer.querySelectorAll("span");
+  
+  stars.forEach(star => {
+    star.addEventListener("mouseover", () => highlightStars(stars, parseInt(star.dataset.value)));
+    star.addEventListener("mouseout", () => highlightStars(stars, selectedRating));
+    star.addEventListener("click", () => selectedRating = parseInt(star.dataset.value));
+  });
+
+  highlightStars(stars, selectedRating);
+
+  return () => selectedRating;
+}
+
+function highlightStars(stars, count){
+  stars.forEach((star,i) => { star.textContent = i < count ? "★" : "☆"; });
+}
+
+function submitReview(orderIndex){
+  const orders = JSON.parse(localStorage.getItem(`${loggedInUser}_orders`)) || [];
+  const toReviewOrders = orders.filter(o => o.status === "To Review");
+  const order = toReviewOrders[orderIndex];
+  const realIndex = orders.findIndex(o => o.date === order.date);
+
+  const reviewInput = document.getElementById(`review-${indexToId(orderIndex)}`);
+  const reviewText = reviewInput.value.trim();
+  const reviewImageInput = document.getElementById(`reviewImage-${indexToId(orderIndex)}`);
+
+  const ratingGetter = starFunctions[orderIndex];
+  const ratingValue = ratingGetter ? ratingGetter() : 5;
+
+  if(reviewText === ""){ alert("Please enter a review before submitting."); return; }
+
+  if(reviewImageInput.files.length > 0){
+    const reader = new FileReader();
+    reader.onload = function(event){ saveReviewAndComplete(event.target.result); };
+    reader.readAsDataURL(reviewImageInput.files[0]);
+  } else { saveReviewAndComplete(""); }
+
+  function saveReviewAndComplete(imageData){
+    orders[realIndex].status = "Completed";
+    saveOrders(orders);
+
+    const existingReviews = JSON.parse(localStorage.getItem("reviews")) || [];
+    order.items.forEach(item => {
+      existingReviews.push({
+        productName: item.name,
+        user: loggedInUser,
+        rating: ratingValue,
+        text: reviewText,
+        image: imageData || item.image || ""
+      });
+    });
+    localStorage.setItem("reviews", JSON.stringify(existingReviews));
+
+    renderOrders();
+    alert("✅ Thank you for your review! Order marked as completed.");
+  }
+}
+
+function renderOrders(){
+  ordersList.innerHTML = "";
+  const toReviewOrders = loadOrders("To Review");
+  if(toReviewOrders.length === 0){ ordersList.innerHTML = "<p style='text-align:center;'>No orders awaiting review.</p>"; return; }
+
+  starFunctions = [];
+
+  toReviewOrders.forEach((order,index)=>{
+    const div = document.createElement("div");
+    div.classList.add("order-info");
+
+    const itemsHTML = order.items.map(item => `
+      <div class="order-item">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <img src="${item.image || 'https://via.placeholder.com/50'}" alt="${item.name}" style="width:50px;height:50px;object-fit:cover;border-radius:5px;">
+          <span>${item.name} × ${item.quantity}</span>
+        </div>
+        <span>₱${(item.price * item.quantity).toFixed(2)}</span>
+      </div>
+    `).join("");
+
+    const totalPrice = order.items.reduce((sum,i)=>sum+(i.price*i.quantity),0).toFixed(2);
+
+    div.innerHTML = `
+      <h3>Order #${index+1}</h3>
+      ${itemsHTML}
+      <div class="total">Total: ₱${totalPrice}</div>
+      <div class="review-box">
+        <div class="star-rating" id="stars-${indexToId(index)}">
+          <span data-value="1">☆</span>
+          <span data-value="2">☆</span>
+          <span data-value="3">☆</span>
+          <span data-value="4">☆</span>
+          <span data-value="5">☆</span>
+        </div>
+        <textarea id="review-${indexToId(index)}" class="review-input" rows="3" placeholder="Write your review..."></textarea>
+        <input type="file" id="reviewImage-${indexToId(index)}" accept="image/*">
+        <div class="review-image-preview" id="reviewImagePreview-${indexToId(index)}"></div>
+        <button class="submit-btn" onclick="submitReview(${index})">Submit Review / Complete</button>
+      </div>
+    `;
+    ordersList.appendChild(div);
+
+    // Setup stars
+    starFunctions[index] = setupStarRating(index);
+
+    // Setup image preview
+    const reviewImageInput = document.getElementById(`reviewImage-${indexToId(index)}`);
+    const reviewImagePreview = document.getElementById(`reviewImagePreview-${indexToId(index)}`);
+    reviewImageInput.addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if(file){
+        const reader = new FileReader();
+        reader.onload = function(event){
+          reviewImagePreview.innerHTML = `<img src="${event.target.result}">`;
+        };
+        reader.readAsDataURL(file);
+      } else { reviewImagePreview.innerHTML = ""; }
+    });
+  });
+}
+
+window.addEventListener('storage', e=>{ if(e.key === `${loggedInUser}_orders`) renderOrders(); });
+
+renderOrders();
+</script>
+</body>
+</html>

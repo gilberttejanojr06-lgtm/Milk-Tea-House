@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dagupan Milk Tea House - Login</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      position: relative;
+    }
+
+    .admin-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: white;
+      color: #6366f1;
+      border: none;
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+      transition: 0.3s;
+    }
+
+    .admin-btn:hover {
+      background: #6366f1;
+      color: white;
+      transform: scale(1.1);
+    }
+
+    .login-container {
+      background: #fff;
+      width: 90%;
+      max-width: 400px;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    }
+
+    .login-container h2 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 8px;
+      color: #444;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+      transition: 0.3s;
+    }
+
+    input:focus {
+      border-color: #6366f1;
+      box-shadow: 0 0 5px rgba(99,102,241,0.4);
+    }
+
+    .show-pass {
+      position: absolute;
+      right: 12px;
+      top: 38px;
+      background: none;
+      border: none;
+      color: #6366f1;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 4px 6px;
+      transition: 0.2s;
+    }
+
+    .show-pass:hover {
+      color: #4f46e5;
+    }
+
+    .login-btn {
+      width: 100%;
+      background: #6366f1;
+      border: none;
+      padding: 12px;
+      color: white;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .login-btn:hover {
+      background: #4f46e5;
+    }
+
+    .signup-link {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    .signup-link a {
+      color: #6366f1;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .signup-link a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <button class="admin-btn" onclick="window.location.href='admin-login.html'">⚙️</button>
+
+  <div class="login-container">
+    <h2>Login</h2>
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="username">Email or Username</label>
+        <input type="text" id="username" name="username" placeholder="Enter your email or username" required>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+        <button type="button" class="show-pass" id="togglePassword">Show</button>
+      </div>
+
+      <button type="submit" class="login-btn">Login</button>
+      <div class="signup-link">
+        Don’t have an account? <a href="signup.html">Sign Up</a>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    // Autofill username if saved
+    const savedUsername = localStorage.getItem("savedUsername");
+    if (savedUsername) {
+      document.getElementById("username").value = savedUsername;
+    }
+
+    // Toggle password visibility
+    const passwordField = document.getElementById("password");
+    const togglePassword = document.getElementById("togglePassword");
+    togglePassword.addEventListener("click", () => {
+      if (passwordField.type === "password") {
+        passwordField.type = "text";
+        togglePassword.textContent = "Hide";
+      } else {
+        passwordField.type = "password";
+        togglePassword.textContent = "Show";
+      }
+    });
+
+    // Handle login
+    document.getElementById("loginForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const usernameInput = document.getElementById("username").value.trim();
+      const passwordInput = document.getElementById("password").value.trim();
+
+      const users = JSON.parse(localStorage.getItem("users")) || [];
+
+      const user = users.find(u => 
+        (u.email === usernameInput || u.name === usernameInput) &&
+        u.password === passwordInput
+      );
+
+      if (user) {
+        alert("✅ Login successful! Welcome, " + user.name + "!");
+        
+        // Save session info
+        localStorage.setItem("loggedInUser", JSON.stringify(user));
+        localStorage.setItem("savedUsername", usernameInput);
+        
+        window.location.href = "home.html";
+      } else {
+        alert("❌ Invalid email or password. Please try again.");
+      }
+    });
+  </script>
+
+</body>
+</html>

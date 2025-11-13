@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home - Dagupan Milk Tea House</title>
+  <style>
+    :root {
+      --primary: #6366f1;
+      --secondary: #8b5cf6;
+      --text-dark: #333;
+      --text-light: #fff;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background: #f9fafb;
+      color: var(--text-dark);
+      margin-top: 80px;
+    }
+
+    /* ===== NAVIGATION BAR ===== */
+    nav {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 25px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-size: 18px;
+      font-weight: 700;
+      color: white;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 25px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: white;
+      font-weight: 500;
+      transition: transform 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      transform: translateY(-2px);
+    }
+
+    .nav-links a.active {
+      font-weight: 600;
+    }
+
+    /* ===== HERO SECTION ===== */
+    .hero {
+      background: linear-gradient(135deg, rgba(99,102,241,0.9), rgba(139,92,246,0.9)), 
+                  url("https://images.unsplash.com/photo-1580894908361-967195033215?auto=format&fit=crop&w=1000&q=60") center/cover no-repeat;
+      color: white;
+      text-align: center;
+      padding: 100px 20px;
+      margin-top: 20px;
+    }
+
+    .hero h2 {
+      font-size: 36px;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      font-size: 18px;
+      margin-bottom: 25px;
+    }
+
+    .hero button {
+      background: white;
+      color: var(--primary);
+      padding: 12px 28px;
+      font-size: 16px;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .hero button:hover {
+      background: var(--secondary);
+      color: white;
+    }
+
+    /* ===== MENU SECTION ===== */
+    .menu-section {
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    .menu-section h3 {
+      font-size: 28px;
+      margin-bottom: 25px;
+      color: var(--primary);
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .menu-item {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+      padding: 20px;
+      transition: 0.3s;
+    }
+
+    .menu-item:hover {
+      transform: translateY(-5px);
+    }
+
+    .menu-item img {
+      width: 100%;
+      border-radius: 12px;
+      margin-bottom: 12px;
+    }
+
+    .menu-item h4 {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .menu-item p {
+      font-size: 14px;
+      color: #666;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: var(--primary);
+      color: white;
+      text-align: center;
+      padding: 15px;
+      font-size: 14px;
+      margin-top: 60px;
+    }
+
+    @media (max-width: 600px) {
+      .nav-links { gap: 12px; font-size: 14px; }
+      .hero h2 { font-size: 28px; }
+      .hero p { font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav>
+    <div class="logo">Dagupan Milk Tea House</div>
+    <div class="nav-links">
+      <a href="home.html" class="active">Home</a>
+      <a href="about.html">About</a>
+      <a href="menu.html">Menu</a>
+      <a href="profile.html">Profile</a>
+      <a href="#" id="logoutBtn">Logout</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <h2>Welcome to Dagupan Milk Tea House</h2>
+    <p>Refreshing flavors, made with love in every cup 🍵</p>
+    <button onclick="window.location.href='menu.html'">View Menu</button>
+  </section>
+
+  <!-- Menu Preview -->
+  <section class="menu-section">
+    <h3>Our Favorites</h3>
+    <div class="menu-grid">
+      <div class="menu-item">
+        <img src="Classic Milk Tea.jpg" alt="Classic Milk Tea">
+        <h4>Classic Milk Tea</h4>
+        <p>Smooth, creamy, and perfectly balanced sweetness.</p>
+      </div>
+      <div class="menu-item">
+        <img src="Brown Sugar Milk Tea.jpg" alt="Brown Sugar Milk Tea">
+        <h4>Brown Sugar Milk Tea</h4>
+        <p>Rich caramel flavor with a chewy pearl twist.</p>
+      </div>
+      <div class="menu-item">
+        <img src="Taro Milk Tea.jpg" alt="Taro Milk Tea">
+        <h4>Taro Milk Tea</h4>
+        <p>Sweet taro blended to perfection with creamy milk.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    © 2025 Dagupan Milk Tea House. All rights reserved.
+  </footer>
+
+  <script>
+    // Logout confirmation
+    document.getElementById("logoutBtn").addEventListener("click", function(e) {
+      e.preventDefault();
+      if (confirm("Are you sure you want to logout?")) {
+        localStorage.removeItem("loggedInUser");
+        window.location.href = "index.html";
+      }
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>User Profile - Dagupan Milk Tea House</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; font-family: "Poppins", sans-serif; }
+  body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: white;
+  }
+
+  /* Navbar */
+  nav {
+    width: 100%;
+    background: rgba(0,0,0,0.2);
+    backdrop-filter: blur(8px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  nav h1 { font-size: 18px; font-weight: 700; }
+  nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 15px;
+    font-weight: 600;
+    transition: 0.2s;
+  }
+  nav a:hover { text-decoration: underline; }
+
+  .back-btn {
+    align-self: flex-start;
+    background: linear-gradient(90deg, #6366f1, #4f46e5);
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 13px;
+    transition: all 0.3s ease;
+    margin-top: 15px;
+  }
+  .back-btn:hover { background: #4f46e5; transform: scale(1.05); }
+
+  h2 {
+    font-weight: 700;
+    margin-top: 20px;
+    margin-bottom: 15px;
+    font-size: 22px;
+  }
+
+  .profile-pic img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  }
+
+  .edit-pic-btn {
+    display: inline-block;
+    margin-top: 10px;
+    background: white;
+    color: #6366f1;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 13px;
+  }
+
+  .info-section {
+    margin-top: 25px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 15px;
+    padding: 15px 20px;
+    width: 100%;
+    max-width: 420px;
+    backdrop-filter: blur(6px);
+  }
+
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    border-bottom: 1px dashed rgba(255,255,255,0.3);
+    padding-bottom: 6px;
+    font-size: 14px;
+  }
+
+  .label { color: #e0e0ff; font-weight: 500; }
+  .value { font-weight: 600; color: #fff; }
+
+  .actions {
+    margin-top: 25px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    width: 100%;
+    max-width: 420px;
+  }
+
+  .btn {
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    color: white;
+    padding: 10px 0;
+    border-radius: 12px;
+    transition: 0.3s;
+  }
+
+  .btn:hover { transform: scale(1.05); }
+
+  .btn-pay { background: linear-gradient(90deg, #22c55e, #16a34a); }
+  .btn-ship { background: linear-gradient(90deg, #3b82f6, #2563eb); }
+  .btn-receive { background: linear-gradient(90deg, #f59e0b, #d97706); }
+  .btn-review { background: linear-gradient(90deg, #8b5cf6, #7c3aed); }
+
+  .btn-logout {
+    background: white;
+    color: #4f46e5;
+    width: 100%;
+    max-width: 420px;
+    margin-top: 25px;
+    padding: 12px 0;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 15px;
+  }
+
+  input[type="file"] { display: none; }
+</style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav>
+    <h1>Dagupan Milk Tea</h1>
+    <div>
+      <a href="home.html">Home</a>
+      <a href="menu.html">Menu</a>
+      <a href="cart.html">Cart</a>
+      <a href="profile.html">Profile</a>
+    </div>
+  </nav>
+
+  <button class="back-btn" onclick="goBack()">← Back</button>
+
+  <h2>👤 My Profile</h2>
+
+  <div class="profile-pic">
+    <img id="profileImage" src="default-profile.png" alt="Profile Picture">
+    <label for="uploadPic" class="edit-pic-btn">Change Picture</label>
+    <input type="file" id="uploadPic" accept="image/*">
+  </div>
+
+  <div class="info-section">
+    <div class="info-row"><div class="label">Full Name:</div><div id="profileName" class="value">—</div></div>
+    <div class="info-row"><div class="label">Email:</div><div id="profileEmail" class="value">—</div></div>
+    <div class="info-row"><div class="label">Phone:</div><div id="profilePhone" class="value">—</div></div>
+    <div class="info-row"><div class="label">Address:</div><div id="profileAddress" class="value">—</div></div>
+  </div>
+
+  <div class="actions">
+    <button class="btn btn-pay" onclick="payNow()">💳</button>
+    <button class="btn btn-ship" onclick="shipOrder()">🚚</button>
+    <button class="btn btn-receive" onclick="receiveOrder()">📦</button>
+    <button class="btn btn-review" onclick="reviewOrder()">⭐</button>
+  </div>
+
+  <button id="logoutBtn" class="btn btn-logout">Logout</button>
+
+<script>
+  // Load the logged-in user from localStorage
+  const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+
+  if (!loggedInUser) {
+    alert("⚠️ No user is logged in. Please log in first.");
+    window.location.href = "index.html";
+  } else {
+    // Update profile details automatically
+    document.getElementById("profileName").textContent = loggedInUser.name || "—";
+    document.getElementById("profileEmail").textContent = loggedInUser.email || "—";
+    document.getElementById("profilePhone").textContent = loggedInUser.phone || "—";
+    document.getElementById("profileAddress").textContent =
+      `${loggedInUser.region || ''} ${loggedInUser.province || ''} ${loggedInUser.municipality || ''} ${loggedInUser.barangay || ''}`.trim() || "—";
+
+    // Load user-specific profile picture
+    const picKey = `profilePic_${loggedInUser.email}`;
+    const savedPic = localStorage.getItem(picKey);
+    document.getElementById("profileImage").src = savedPic || "default-profile.png";
+
+    // Handle uploading new profile picture
+    document.getElementById("uploadPic").addEventListener("change", function() {
+      const file = this.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = e => {
+          document.getElementById("profileImage").src = e.target.result;
+          localStorage.setItem(picKey, e.target.result);
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  }
+
+  function goBack() { window.location.href = "cart.html"; }
+  function payNow() { window.location.href = "to-pay.html"; }
+  function shipOrder() { window.location.href = "to-ship.html"; }
+  function receiveOrder() { window.location.href = "to-receive.html"; }
+  function reviewOrder() { window.location.href = "to-review.html"; }
+
+  document.getElementById("logoutBtn").addEventListener("click", () => {
+    localStorage.removeItem("loggedInUser");
+    alert("You have logged out.");
+    window.location.href = "index.html";
+  });
+</script>
+
+</body>
+</html>

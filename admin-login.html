@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login - Dagupan Milk Tea House</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      position: relative;
+    }
+
+    /* Back button icon (top-right corner) */
+    .back-icon {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: white;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+      text-decoration: none;
+      color: #6366f1;
+      font-size: 22px;
+      transition: 0.3s;
+    }
+
+    .back-icon:hover {
+      background: #6366f1;
+      color: white;
+      transform: scale(1.05);
+    }
+
+    .login-container {
+      background: #fff;
+      width: 90%;
+      max-width: 400px;
+      padding: 35px;
+      border-radius: 20px;
+      box-shadow: 0 6px 25px rgba(0,0,0,0.2);
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 25px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      font-weight: 600;
+      color: #444;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+      transition: 0.3s;
+    }
+
+    input:focus {
+      border-color: #6366f1;
+      box-shadow: 0 0 5px rgba(99,102,241,0.4);
+    }
+
+    .login-btn {
+      width: 100%;
+      background: #6366f1;
+      border: none;
+      padding: 12px;
+      color: white;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .login-btn:hover {
+      background: #4f46e5;
+    }
+
+    .error-message {
+      color: #ef4444;
+      text-align: center;
+      font-size: 14px;
+      margin-top: 10px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Back icon to user login -->
+  <a href="index.html" class="back-icon" title="Back to User Login">←</a>
+
+  <div class="login-container">
+    <h2>Admin Login</h2>
+    <form id="adminLoginForm">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" placeholder="Enter admin username" required>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Enter admin password" required>
+      </div>
+
+      <button type="submit" class="login-btn">Login</button>
+      <p class="error-message" id="error">Invalid username or password.</p>
+    </form>
+  </div>
+
+  <script>
+    // Default admin credentials (you can change these)
+    const adminUsername = "admin";
+    const adminPassword = "12345";
+
+    document.getElementById("adminLoginForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const user = document.getElementById("username").value;
+      const pass = document.getElementById("password").value;
+      const errorMsg = document.getElementById("error");
+
+      if (user === adminUsername && pass === adminPassword) {
+        localStorage.setItem("adminLoggedIn", "true");
+        window.location.href = "admin.html";
+      } else {
+        errorMsg.style.display = "block";
+      }
+    });
+  </script>
+
+</body>
+</html>

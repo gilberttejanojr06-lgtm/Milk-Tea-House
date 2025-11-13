@@ -271,9 +271,130 @@
         let profileAddresses = JSON.parse(localStorage.getItem(`${loggedInUser}_profileAddresses`)) || [];
         let lastUsedAddress = JSON.parse(localStorage.getItem(`${loggedInUser}_lastUsedAddress`)) || null;
 
-        const locations = { "Cagayan": ["Tuguegarao", "Aparri", "Santa Ana"], "Isabela": ["Ilagan", "Cauayan", "Santiago"] };
-        const barangays = { "Tuguegarao": ["Bagay", "Centro", "San Juan"], "Aparri": ["Barangay 1", "Barangay 2"], "Santa Ana": ["Barangay A", "Barangay B"], "Ilagan": ["Zone 1", "Zone 2"], "Cauayan": ["Zone A", "Zone B"], "Santiago": ["Barangay X", "Barangay Y"] };
-        const zipCodes = { "Bagay": "3500", "Centro": "3501", "San Juan": "3502", "Barangay 1": "3503", "Barangay 2": "3504", "Barangay A": "3505", "Barangay B": "3506", "Zone 1": "3507", "Zone 2": "3508", "Zone A": "3509", "Zone B": "3510", "Barangay X": "3511", "Barangay Y": "3512" };
+        const locations = {
+            "Cagayan": ["Abulug", "Alcala", "Allacapan", "Amulung", "Aparri",
+                "Baggao", "Ballesteros", "Buguey", "Calayan", "Camalaniugan",
+                "Claveria", "Enrile", "Gattaran", "Gonzaga", "Iguig", "Lal-lo", "Lasam",
+                "Pamplona", "Peñablanca", "Piat", "Rizl", "Sanchez-Mira", "Santa Ana",
+                "Santa Praxedes", "Santa Teresita", "Santo Niño", "Solana", "Tuao", "Tuguegarao"],
+
+            "Apayao": ["Calanasan", "Conner", "Flora", "Luna",
+                "Kabugao", "Pudtol", "Santa Marcela"],
+        };
+        const barangays = {
+            "Abulug": ["Alinunu", "Bagu", "Banguian", "Calog Norte", "Calog Sur", "Canayun", "Centro",
+                "Dana-ili", "Guiddam", "Libertad", "Lucban", "Pinili", "San Agustin", "San Julian", "Santa Filomeno",
+                "Santo Tomas", "Siguiran", "Simayung", "Sirit"],
+
+            "Alcala": ["Abbeg", "Afusing Bato", "Afusing Daga", "Agani", "Baculod", "Baybayog", "Cabuluan", "Calantac", "Carallangan",
+                "Centro Norte", "Centro Sur", "Dalaoig", "Damurog", "Jurisdiction", "Malalatan", "Maraburab", "Masin",
+                "Pagbangkeruan", "Pared", "Piggatan", "Pinopoc", "Pussia", "San Esteban", "Tamban", "Tupang"],
+
+            "Allacapan": ["Bessan", "Binobongan", "Bulo", "Burot", "Capagaran", "Capalutan", "Capanickian Norte", "Capanickian Sur",
+                "Cataratan", "Centro East", "Centro West", "Daan-ili", "Dagupan", "Dalayap", "Gagaddangan", "Iringan", "Labben", "Maluyo",
+                "Mapurao", "Matucay", "Nagattatan", "Pacac", "San Juan", "Silangan", "Tamboli", "Tubel", "Utan"],
+
+            "Amulung": ["Abolo", "Agguirit", "Alitungtung", "Annabucalan", "Anquiray", "Babayuan", "Baccuit", "Bacring", "Baculud",
+                "Balauini", "Bauan", "Bayabat", "Calamagui", "Calintaan", "Caratacat", "Casingsingan Norte", "Casngsingan Sur", "Catarauan",
+                "Cento", "Concepcion", "Cordova", "Dadda", "Dafunganay", "Dugayung", "Estefaia", "Gabut", "Gangauan", "Goran", "Jurisdiccion",
+                "La Suerte", "Logung", "Magogod", "Manalo", "Marobbob", "Masical", "Monte Alegre", "Nabbialan", "Nagsabaran", "Nangalasauan",
+                "Nanuccauan", "Pacac-Grande", "pacac-Pequeno", "Palacu", "Palayag", "Tana", "Unag"],
+
+            "Aparri": ["Backiling", "Bangag", "Binalan", "Bisagu", "Bukig", "BUlala Norte", "Bulala Sur", "Caagaman", "Centro 1", "Centro2",
+                "Centro 3", "Centro 4", "Centro 5", "Centro 6", "Centro 7", "Centro 8", "Centro 9", "Centro 10", "Centro 11", "Centro 12", "Centro 13",
+                "Centro 14", "Centro 15", "Dodan", "Fuga Island", "Gaddang", "Linao", "Mabanguc", "Macanaya", "Maura", "Minanga", "Navagan", "Paddaya",
+                "Paruddun Norte", "Paruddun Sur", "Plaza", "Punta", "San Antonio", "Sanja", "Tallungan", "Toran", "Zinarag"],
+
+            "Baggao": ["Adaoag", "Agaman", "Agaman Norte", "Agaman Sur", "Alba", "Annayata", "Asassi", "Asinga-Via", "Awalla", "Bacagan", "Bagunot",
+                "Barsat East", "Barsat West", "Bitag Grande", "Bitag Pequeno", "Bunugan", "C. Verzosa", "Carupian", "Catugay", "Dabbac Grande", "Dalin",
+                "Dalla", "Hacuenda Intal", "Ibulo", "Imurong", "J. Pallagao", "Lasilat", "Mabini", "Masical", "Mocag", "Nangalinan", "Poblacion", "Remus",
+                "San Antonio", "San Francisco", "San Isidro", "San Jose", "San Miguel", "San Vicente", "Santa Margarita", "Santor", "Taguing",
+                "Taguntungan", "Tallang", "Taytay", "Temblique", "Tungel"],
+
+            "Ballesteros": ["Ammubuan", "Baran", "Cabaritan East", "Cabaritan West", "Cabayu", "Cabuluan East", "Cabuluan West", "Centro East", "Centro West",
+                "Fugu", "Mabuttal East", "mabbutal West", "Nararagan", "Palloc", "Pagayan East", "Pagayan West", "San Juan", "Santa Cruz", "Zitanga"],
+
+            "Buguey": ["Alucao West", "Antiporda", "Ballang", "Balza", "Cabaritan", "Calamegatan", "Centro", "Centro West", "Dalaya", "Fula", "Leron", "Maddakero",
+                "Mala Este", "Mala Weste", "Minanga Este", "Minanga Weste", "Paddaya Este", "Paddaya Weste", "Pattao", "Quinawegan", "Remebella", "San Isidro", "San Juan",
+                "San Vicente", "Santa Isabel", "Santa Maria", "Tabbac", "Villa Cielo", "Villa Gracia", "Villa Leonora"],
+
+            "Calayan": ["Babuyan Claro", "Balatubat", "Cabudadan", "Centro II", "Dadao", "Dalupiri", "Dibay", "Dilam", "Magsidel", "Minabel", "Naguilian", "Poblacion"],
+
+            "Camalaniugan": ["Abagao", "Afunan Cabayu", "Agusi", "Alilinu", "Baggao", "Bantay", "Bulala", "Casili Norte", "Casili Sur", "Catotoran Norte", "Catotoran Sur",
+                "Centro Norte", "Centro Sur", "Cullit", "Dacal-Lafugu", "Dammang Sur", "Dammang Norte", "Dugo", "Fusina", "Gang-ngo", "Jurisdiction", "Luec", " Minanga", "Paragat",
+                "Sapping", "Tagum", "Tuluttuging", "Ziminila"],
+
+            "Claveria": ["Alimoan", "Bacsay Cataraoan Norte", "Bacsay Cataraoan Sur", "Bacsay Mapulapula", "Bilibigao", "Bueavista", "Cadcadir East", "Cadcadir West", "Camalaggoan/ D Leano",
+                "Capanikian", "Centro I", "Centro II", "Centro III", "Centro IV", "Centro V", "Centro VI", "Centro VII", "Centro VIII", "Culao", "Dibalio", "Kilkiling", "Lablabig", "Luon",
+                "Mabnang", "Magdalena", "Maninitao", "Nagsabaran", "Pata East", "Pata West", "Pinas", "San Antonio", "San Isidro", "San Vicente", "Santa Maria", "Santiago", "Santi Nino",
+                "Santo Tomas", "Tabbugan", "Taggat Norte", "Taggat Sur", "Union"],
+
+            "Enrile": ["Alibago", "Barangay I", "Barangay II", "Barangay III", "Barangay III-A", "Barangay IV", "Batu", "Divisoria", "Inga", "Lanna", "Lemu Norte", "Lemu Sur", "Liwan Norte", "Liwan Sur",
+                "Maddarulug Norte", "Maddarulug Sur", "Magalalag East", "Magalalag West", "Maracuru", "Roma Norte", "Roma Sur", "San Antonio"],
+
+            "Gattaran": ["Abra", "Aguiguican", "Batangan Ngagan", "Baracaoit", "Baraoidan", "Barbarit", "Basao", "Bolos Point", "Cabayu", "Calaoagan Bassit", "Calaoagan Dackel", "Capiddigan",
+                "Capissayan Norte", "Capissayan Sur", "Casicallan Norte", "Casicallan Sur", "Centro Norte", "Centro Sur", "Cullit", " Cumao", "Cunig", "Dummun", "Fugu", "Ganzano", "Guising", "L. Adviento",
+                "Langgan", "Lapogan", "Mabunao", "Nabaccayan", "Naddungan", "Nagatutuan", "Nassiping", "Newaga", "Palagao Norte", "Palagao sur",
+                "Pina Este", "Pena Weste", "San Carlos", "San Vicente", "Santa Ana", "Santa Maria", "Sidem", "T. Elizaga", "Tagumay", "Takiki", "Taligan", "Tangalagan", "Tubungan Este", "Tubungan Weste"],
+
+            "Gonzaga": ["Amunitan", "BBatangan", "Baua", "Cabanbanan Norte", "Cabananan Sur", "Ccabiraoan", "Calayan", "Callao", "Caroan", "Casitan", "Flourishing", "Ipil", "Isca", "Magratil", "Minanga",
+                "Paaise", "Pateng", "Progressive", "Rebecca", "San Jose", "Santa Clara", "Santa Cruz", "SantaMaria", "Smart", "Tape"],
+
+            "Iguig": ["Ajat", "Atulu", "Baculud", "Bayo", "Campo", "Dumpao", "Gammad", "Garab", "Malabbac", "Manaoag", "Minanga Norte", "Minanga Sur", "Nattanzan", "Redondo", "Salamague", "San Esteban", "San Isidro",
+                "San Lorenzo", "San Vicente", "Santa Barbara", "Santa Rosa", "Santa Teresa", "Santiago"],
+
+            "Lal-lo": ["Abagao", "Alaguia", "Bagumbayan", "bangag", "Bical", "bicud", "Binag", "Cabayabasan", "Cagoran", "Cambong", "Catayauan", "Catugan", "Centro", "Cullit", "Dagupan", " Dalaya", "Fabrica", "Jurisdiction",
+                "Lalafugan", "Logacc", "Magallungon", "Magapit", "Malanao", "Maxingal", "Naguillian", "Paranum", "Rosario", "San Antonio", "San Jose", "San Juan", "San Lorenzo", "San Mariano", "Santa Maria", "Tucalana"],
+
+            "Lasam": ["Aggunetan", "Alannay", "Battalan", "Cabatacan East", "Cabatacan West", "Calapangan Norte", "Calapangan Sur", "Callao Norte", "Callao Sur", "Cataliganan", "Centro I", "Centro II", "Centro III", "Finugo Norte",
+                "Guban", "Ignacio Jurado", "Magsaysay", "Malinta", "Minanga Norte", "Minanga Sur", "Nabannagan East", "Nabannagan West", "New Orlins", "NIcolas Agatep", "Peru", "San Pedro", "Sicalao", "Tagao", "Tucalan Passing", "Viga"],
+
+            "Pamlona": ["Abangqueruan", " Allasitan", "Bagu", "Balingit", "Bidduang", "Cabaggan", "Capalalian", "Casitan", "Centro", "Curva", "Gattu", "Masi", "Nagattatan", "Nagtupacan", "San Juan", "Santa Cruz", "Tabba", "Tupanna",],
+
+            "Penablanca": ["Aggugaddan", "Alimanao", "Baliuag", "Bical", "Bugatay", "Buyun", "Cabasan", "Cabbo", "Callao", "Camasi", "Centro", "Dodan", "Lapi", "Malibabag", "Manga", "Minanga", "Nababalayan", "Nanguilattan",
+            "Nannarian", "Parabba", "Patagueleg", "Quibal", "San Roque", "Sisim" ],
+
+            "Piat": ["Apayao", "Aquib", "BAung", "Calaoagan", "Catarauan", "Dugayang", "Gumarueng", "Macapil", "Maguilling", "Minanga", "Poblacionn I", "Poblacion II", "Santa Barbara", "Santo Domingo", "Sicatna", "Villa Rey", " Villa Reyno", " Warat" ],
+
+            "Rizal": ["Anagguan", " Anungu", "anurturu", "Balangcanag", "Battut", "Batu", "Bural", " Cambabangan", "Capacan", "Dunggan", "Duyun", "Gaddangao", "Gaggabutan East", "Gaggabutan West", "Illuru Norte", "Illiru Sur", "Lattut", " Linnao",
+            "Liwan", "Mabbang", "Masi", "Mauannan", "Minanga", "Nanauatan", "Nanungaran", "Pasingan", "Poblacion", "Sa Juan", "Sinicking" ],
+
+            "Sanchez-Mira": ["Bangan", "Callungan", "Centro I", "Centro II", "Dacal", "Dagueray", "Dammang", "Kittag", "Langapan", "Magacan", "Marzan", "Masisit", "Nagrangtaan", "Namuac", "San Andres", "Santiago", "Santos", "Tokitok",],
+
+            "Santa Ana": ["BAtu-Parada", "Casagan", "Casambalangan", "Centro", "Diora-Zinungan", "Dungeg", "Kapanikian", "Marede", "Palawig", "Patunungan", "Rapuli", "San Vicente", "Santa Clara", "Santa Cruz", "Tangatan", "Visitacion" ],
+
+            "Santa Praxedes": ["Cadongdongan", "Capoacuan", "Centro I", "Centro II", "Macatel", "Portabaga", "Salungsong", "San Juan", "San Miguel", "Sicul" ],
+
+            "Santa Teresita": ["Alucao", "Aridawen", "Buyun", "Caniugan", "Centro Eats", "Centro West", "Dungeg", "Luga", "Masi", "Massion", "Simbaluca", "Simpatuyo", "Villa" ],
+
+            "Santo Nino": ["Abariongan Ruar", "Abariongan Uneg", "Bangalan", "Balanni", "Cabayo", "Calapangan", "Calassitan", "Campo", "Centro Norte", "Centro Sur", "Dungao", "Lattac", "Liptana", "Lubo", "Mabitbitnong", "Mapitac", "Masical", "Matalao",
+                "Nag-uma", "Namuccayan", "Niug Norte", "Niug Sur", "Palusao", "San Manuel", "San Roque", "Santa Felicitas", "Santa MAria", "Sidiran", "Tabang", "Tamucco", "Virginai"],
+
+            "Solana": ["Andarayan North", "Andarayan South", "Bangag", "Bantay", "Basi East", "Basi West", "Bauan East", "Bauan West", "Cadaanan", "Calamagui", "Calilauan", "Carilucud", "Cattaran", "Centro Northeast", "Centro Northwest", "Centro Boutheast", "Centro Southwest", "Dassan",
+                "Furagui", "Gadu", "Gen. Eulogio Balao", "Iraga", "Lanna", "Lannig", "Lingu", "Maddarulung", "Maguirig", "Malalam-Malacabibi", "Nabbotuan", "Nangalisan", "Natappian East", "Natappian West", "Padul", "Palao", "Parug-paruug", "Pataya", "Sampaguita", " Ubong"],
+
+            "Tuao": ["Accusilian", "Alabiao", "Angang", "Bagumbayan", "Balagao", "Barancuag", "Battung", "Bicok", "Bugcay", "Cagamitan", "Cato", "Culong", "Dagupan", "Fugu", "Lakambini", "Lallayug", "Malalinta", "Malumin", "Mambacag", "Mungo", "Naruangan", "Palca", "Pata", "Poblacion I",
+            "Poblacion II", "San Juan", "San Luis", "San Vicente", "Santo Tomas", "Taribubu", "Villa Laida" ],
+
+            "Tuguegarao": ["Annafunan East", "Annafunan West", "Atulayan Norte", "Atulayan Sur", "Bagay", "Buntun", "Caggay", "Capatan", "Carig", "Caritan Centro", "Caritan Norte", "Caritan Sur", "Cataggaman Nuevo", "Cataggaman Pardo", "Cataggaman Viejo", "Centro 1", "Centro 10", "Centro 11",
+                "Centro 12", "Centro 2", "Centro 3", "Centro 4", "Centro 5", "Centro 6", "Centro 7", "Centro 8", "Centro 9", "Dadda", "Gosi Norte", "Gosi Sur", "Larion Alto", "Larion Bajo", "Leonarda", "Libag Norte", "Liag Sur", "Linao East",
+            "Linao West", "Nambbalan Norte", "Nambbalan Sur", "Pallua Norte", "Pallua Sur", "Pengue", "Reyes", "San Gabriel", "Tangga", "Tanza", "Ugac Norte", "Ugac Sur"],
+
+            "Calanasan": ["Butao", "Cadaclan", "Don Roque Ablan Sr.", "Eleazar", "Eva Puzon", "Kabugawan", "Langnao", "Lubong", "Macalino", "Naguilian", "Poblacion", "Sabangan", "Santa Elena", "Santa Filomena", "Tanglagan", "Tubang", "Tubongan"],
+
+            "Conner": ["Allangigan", "Banban", "Buluan", "Caglayan", "Calafug", "Cupis", "Daga", "Guinaang", "Ili", "Karikitan", "Katablangan", "Malama", "Manag", "Mawegui", "Nabuangan", "Paddaoan", "Puguin", "Ripang", "Sacpil", "Talifugo"],
+
+            "Flora": ["Allig", "Anninipan", "Atok", "Bagutong", "Balasi", "Balluyan", "Malayugan", "Mallig", "Malubibit Norte", "Malubibit Surr", "Poblacion East", "Poblacion West", "San Jose", "Santa Maria", "Tamalunog", "Upper Atok"],
+
+            "Luna": ["Bacsay", "Cagandungan", "Calabigan", "Cangisitan", "Capagaypayan", "Dagupan", "Lappa", "Luyon", "Marag", "Poblacion", "Quirino", "Salvacion", "San Francisco", "San Gregorio", "San Isidro Norte", "San Isidro Sur", "San Sebasitian", "Santa Lina", "Shalom", "Tumog", "Turod", "Zumigui"],
+
+            "Kabugao": ["Badduat", "Baliwanan", "Bulu", "cabetayan", "Daraga", "Dibagat", "Karagawan", "Kumao", "Laco", "Lenneng", "Lucab", "Luttuacan", "Madatag", "Madduag", "Magabta", "Maragat", "Musimut", "Nagbabalayan", "Poblacion", "Tuyangan", "Waga"],
+
+            "Pudtol": ["Aga", "Alem", "Amado", "Aurora", "Cabatacan", "Capannikian", "Dona Loreta", "Emilia", "Imelda", "Lower Maton", "Lt. Balag", "Lydia", "Maliang", "Mataguisi", "Poblacion", "San Antpnio", "San Jose", "San Luis", "San Mariano", "Swan", "Upper Maton"],
+
+            "Santa Marcela": ["Barocboc", "Consuelo", "Emiliana", "Imelda", "Malekkeg", "Marcela", "Nueva", "Panay", "San Antonio", "San Carlos", "San Juan", "San Mariano", "Sipa Proper", "", "", "", "", "",],
+        };
+        const zipCodes = { "Dagupan": "3813", "Centro": "3501", "San Juan": "3502", "Barangay 1": "3503", "Barangay 2": "3504", "Barangay A": "3505", "Barangay B": "3506", "Zone 1": "3507", "Zone 2": "3508", "Zone A": "3509", "Zone B": "3510", "Barangay X": "3511", "Barangay Y": "3512" };
 
         const provinceSelect = document.getElementById("province");
         const municipalitySelect = document.getElementById("municipality");
